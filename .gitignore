@@ -1,0 +1,4 @@
+.github/**
+
+# Project exclude paths
+/cmake-build-debug/
