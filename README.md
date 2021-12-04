@@ -1,4 +1,7 @@
 # Concurrent Traffic Simulation
+
+![CI](https://github.com/xichen-de/ConcurrentTrafficSimulation/actions/workflows/docker.yml/badge.svg)
+
 ## Dependencies
 * cmake >= 2.8
 * make >= 4.1 (Linux, Mac), 3.81 (Windows)
