@@ -13,7 +13,7 @@ The project uses the knowledge of concurrent programming in C++, namely mutexes,
 ## Usage
 ### Dependencies
 * cmake >= 2.8
-* make >= 4.1 (Linux, Mac), 3.81 (Windows)
+* make >= 4.1
 * OpenCV >= 4.1
 * gcc/g++ >= 5.4
 
