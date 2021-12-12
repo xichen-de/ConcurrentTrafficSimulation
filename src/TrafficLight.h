@@ -31,62 +31,42 @@
 // forward declarations to avoid include cycle
 class Vehicle;
 
+enum TrafficLightPhase {
+    red, green
+};
 
 template<class T>
 class MessageQueue {
 public:
+
     void send(T &&traffic_light_phase);
 
     T receive();
 
 private:
     std::deque<T> _queue;
-    std::condition_variable _condition_variable;
+    std::condition_variable _condition;
     std::mutex _mutex;
 };
 
 
-
 class TrafficLight : public TrafficObject {
 public:
-    // constructor / destructor
     TrafficLight();
 
-    ~TrafficLight();
-
-    // getter and setter
-    int getID() { return _id; }
-
-    void setPosition(double x, double y);
-
-    void getPosition(double &x, double &y);
-
-    ObjectType getType() { return _type; }
-
-    // typical behaviour methods
     void waitForGreen();
 
-    void simulate();
+    void simulate() override;
 
-    enum TrafficLightPhase {
-        red, green
-    };
 
     TrafficLightPhase getCurrentPhase();
 
 private:
-    // typical behaviour methods
-
-    // FP.4b : create a private member of type MessageQueue for messages of type TrafficLightPhase 
-    // and use it within the infinite loop to push each new TrafficLightPhase into it by calling 
-    // send in conjunction with move semantics.
-
     void cycleThroughPhases();
 
     TrafficLightPhase _currentPhase;
     std::condition_variable _condition;
     std::mutex _mutex;
-    std::random_device _rd;     // only used once to initialise (seed) engine
     MessageQueue<TrafficLightPhase> _messageQueue;
 };
 
