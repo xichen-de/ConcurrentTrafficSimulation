@@ -85,6 +85,8 @@ private:
     TrafficLightPhase _currentPhase;
     std::condition_variable _condition;
     std::mutex _mutex;
+    std::random_device _rd;     // only used once to initialise (seed) engine
+    MessageQueue<TrafficLightPhase> _messageQueue;
 };
 
 #endif

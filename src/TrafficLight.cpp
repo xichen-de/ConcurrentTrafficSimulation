@@ -63,18 +63,21 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
     return _currentPhase;
 }
 
-void TrafficLight::simulate()
-{
-    // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class. 
-}
 
-// virtual function which is executed in a thread
-void TrafficLight::cycleThroughPhases()
-{
-    // FP.2a : Implement the function with an infinite loop that measures the time between two loop cycles 
-    // and toggles the current phase of the traffic light between red and green and sends an update method 
-    // to the message queue using move semantics. The cycle duration should be a random value between 4 and 6 seconds. 
-    // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles. 
-}
 
 */
+void TrafficLight::cycleThroughPhases() {
+    std::mt19937 rng(_rd());    // random-number engine used (Mersenne-Twister in this case)
+    std::uniform_int_distribution<int> uni(4000, 6000); // guaranteed unbiased
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(uni(rng)));
+        _currentPhase = (_currentPhase == TrafficLightPhase::red) ? TrafficLightPhase::green : TrafficLightPhase::red;
+        _messageQueue.send(std::move(_currentPhase));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+}
+
+void TrafficLight::simulate() {
+    std::thread t(&TrafficLight::cycleThroughPhases, this);
+    threads.emplace_back(std::move(t));
+}
