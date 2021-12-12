@@ -66,6 +66,17 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
 
 
 */
+
+template<class T>
+void MessageQueue<T>::send(T &&traffic_light_phase) {
+
+}
+
+template<class T>
+T MessageQueue<T>::receive() {
+    return nullptr;
+}
+
 void TrafficLight::cycleThroughPhases() {
     std::mt19937 rng(_rd());    // random-number engine used (Mersenne-Twister in this case)
     std::uniform_int_distribution<int> uni(4000, 6000); // guaranteed unbiased
