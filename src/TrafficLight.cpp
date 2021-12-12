@@ -28,6 +28,7 @@
 template<class T>
 void MessageQueue<T>::send(T &&traffic_light_phase) {
     std::lock_guard<std::mutex> lock(_mutex);
+    _queue.clear(); // https://knowledge.udacity.com/questions/586056
     _queue.emplace_back(std::move(traffic_light_phase));
     _condition.notify_one();
 }
@@ -43,9 +44,9 @@ T MessageQueue<T>::receive() {
 }
 
 void TrafficLight::cycleThroughPhases() {
-    // https://en.cppreference.com/w/cpp/numeric/random
+    // https://stackoverflow.com/questions/5008804/generating-random-integer-from-a-range
     std::random_device _rd;
-    std::default_random_engine rng(_rd());
+    std::mt19937 rng(_rd());
     std::uniform_int_distribution<int> uni(4000, 6000);
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(uni(rng)));
